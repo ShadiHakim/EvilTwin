@@ -7,6 +7,8 @@ import os
 # initialize the networks dataframe that will contain all access points nearby
 from scapy.layers.dot11 import Dot11Beacon, Dot11, Dot11Elt
 
+interface = "wlx00c140610e6c"
+flag = True
 networks = pandas.DataFrame(columns=["BSSID", "SSID", "dBm_Signal", "Channel"])
 # set the index BSSID (MAC address of the AP)
 networks.set_index("BSSID", inplace=True)
@@ -30,31 +32,39 @@ def callback(packet):
 
 
 def print_all():
-    while True:
+    while flag:
         os.system("clear")
-        print(networks)
+        if networks.empty:
+            print("Please wait...")
+        else:
+            print(networks)
         time.sleep(0.5)
 
 
 def change_channel():
     ch = 1
-    while True:
+    while flag:
         os.system(f"iwconfig {interface} channel {ch}")
         # switch channel from 1 to 14 each 0.5s
         ch = ch % 14 + 1
         time.sleep(0.5)
 
 
-if __name__ == "__main__":
-    # interface name, check using iwconfig
-    interface = "wlan1"
+def get_networks():
     # start the thread that prints all the networks
     printer = Thread(target=print_all)
     printer.daemon = True
     printer.start()
+    printer.join(timeout=5)
     # start the channel changer
     channel_changer = Thread(target=change_channel)
     channel_changer.daemon = True
     channel_changer.start()
+    channel_changer.join(timeout=5)
     # start sniffing
-    sniff(prn=callback, iface=interface)
+    sniff(prn=callback, iface=interface, timeout=5)
+
+    global flag
+    flag = False
+
+    return networks

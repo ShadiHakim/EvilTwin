@@ -5,7 +5,6 @@ sudo php -S 10.0.10.1:80 -t html/
 
 sudo systemctl stop NetworkManager
 sudo systemctl stop systemd-resolved
-sudo systemctl disable systemd-resolved
 
 
 sudo netstat -tupln
