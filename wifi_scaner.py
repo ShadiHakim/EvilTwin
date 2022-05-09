@@ -55,14 +55,14 @@ def get_networks():
     printer = Thread(target=print_all)
     printer.daemon = True
     printer.start()
-    printer.join(timeout=5)
+    printer.join(timeout=60)
     # start the channel changer
     channel_changer = Thread(target=change_channel)
     channel_changer.daemon = True
     channel_changer.start()
-    channel_changer.join(timeout=5)
+    channel_changer.join(timeout=60)
     # start sniffing
-    sniff(prn=callback, iface=interface, timeout=5)
+    sniff(prn=callback, iface=interface, timeout=60)
 
     global flag
     flag = False

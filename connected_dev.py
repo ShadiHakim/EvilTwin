@@ -19,4 +19,4 @@ def packet_handler(pkt):
 if __name__ == "__main__":
     ap = sys.argv[1:2].pop()
     print("Connected devices: ")
-    sniff(iface="wlx00c140610e6c", count=10000, prn=packet_handler, timeout=10)
+    sniff(iface="wlx00c140610e6c", count=10000, prn=packet_handler, timeout=60)

